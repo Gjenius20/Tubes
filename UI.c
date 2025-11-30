@@ -9,25 +9,26 @@ struct Login
     char userPass[10];
 };
 
+// Daftar User / Admin
+struct Login log[] = { {"admin", "admin123"}, {"jamal", "anakhilang"} };
+
 int Tubes()
 {
-    // Daftar User / Admin
-    struct Login log[] = {{"admin", "admin123"}, {"jamal", "anakhilang"}};
 
-    char password[10];
-    char user[10];
+    char passwordInput[10];
+    char userInput[10];
 
     printf("\nMenu Login\n");
     printf("Masukan Username: ");
-    scanf(" %s", user);
+    scanf(" %s", userInput);
     printf("Masukan Pasword: ");
-    scanf(" %s", password);
+    scanf(" %s", passwordInput);
 
     // temp pencarian
     int found = 0;
     for (int i = 0; i < sizeof(log) / sizeof(log[0]); i++)
     {
-        if ((strcmp(user, log[i].userName) == 0) && (strcmp(password, log[i].userPass) == 0))
+        if ((strcmp(userInput, log[i].userName) == 0) && (strcmp(passwordInput, log[i].userPass) == 0))
         {
             found = 1;
         }

@@ -2,35 +2,37 @@
 #include <stdbool.h>
 #include <string.h>
 
-// Variable global
-#define MAX_SISWA 100
 
 struct Siswa
 {
-    char NISN[15];
+    char NISN[11];
     char nama[50];
     char jenisKelamin[15];
     bool statusKIP;
 };
 
-struct Siswa siswa[MAX_SISWA] = {
+// jumlah siswa awal (contoh untuk presentasi)
+struct Siswa siswa[] = {
     {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", true},
     {"0012345679", "Abdullah Koswara", "Laki-laki", false},
     {"0012345680", "Budi Kapal Laut", "Laki-laki", false},
     {"0012345681", "Dewi Angel", "Perempuan", true},
     {"0012345682", "Rama Rama", "Laki-laki", false},
     {"0012345683", "Nina Bobo", "Perempuan", true},
-    {"0012345684", "Fajar Kopling", "Laki-laki", false}};
+    {"0012345684", "Fajar Kopling", "Laki-laki", false} };
 
-int jumlah_siswa = 7; // jumlah siswa awal (contoh untuk presentasi)
+// menghitung banyak jumlah daftar siswa yang tersimpan.
+int jumlah_siswa = sizeof(siswa) / sizeof(siswa[0]);
 
-void tukarSiswa(struct Siswa *a, struct Siswa *b)
+// fungsi menukar index siswa untuk sorting.
+void tukarSiswa(struct Siswa* a, struct Siswa* b)
 {
     struct Siswa temp = *a;
     *a = *b;
     *b = temp;
 }
 
+// fungsi sorting menggunakan bubble-sort berdasarkan NISN.
 void sortBerdasarkanNISN()
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
@@ -43,6 +45,7 @@ void sortBerdasarkanNISN()
     }
 }
 
+// fungsi sorting menggunakan bubble-sort berdasarkan Nama.
 void sortBerdasarkanNama()
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
@@ -55,6 +58,7 @@ void sortBerdasarkanNama()
     }
 }
 
+// fungsi sorting menggunakan bubble-sort berdasarkan KIP.
 void sortBerdasarkanKIP()
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
@@ -67,19 +71,18 @@ void sortBerdasarkanKIP()
     }
 }
 
+// fungsi opsi dalam mengurutkan siswa.
 void urutkanSiswa()
 {
-    int pilihan;
+    int opsi;
     printf("\nUrutkan berdasarkan:\n");
     printf("1. NISN\n");
     printf("2. Nama\n");
     printf("3. Status KIP\n");
     printf("Pilih: ");
-    scanf("%d", &pilihan);
-    while (getchar() != '\n')
-        ;
+    scanf("%d", &opsi);
 
-    switch (pilihan)
+    switch (opsi)
     {
     case 1:
         sortBerdasarkanNISN();
@@ -102,28 +105,30 @@ void urutkanSiswa()
     for (int i = 0; i < jumlah_siswa; i++)
     {
         printf("%-3d. %-20s | NISN: %-20s | JK: %-20s | KIP: %-20s\n",
-               i + 1,
-               siswa[i].nama,
-               siswa[i].NISN,
-               siswa[i].jenisKelamin,
-               siswa[i].statusKIP ? "Ya" : "Tidak");
+            i + 1,
+            siswa[i].nama,
+            siswa[i].NISN,
+            siswa[i].jenisKelamin,
+            siswa[i].statusKIP ? "Ya" : "Tidak");
     }
 }
 
+// fungsi menampilkan daftar siswa yang tersimpan (tanpa sorting).
 void daftarSiswa()
 {
     printf("\n=== Daftar Siswa ===\n");
     for (int i = 0; i < jumlah_siswa; i++)
     {
         printf("%-3d. %-20s | NISN: %-20s | JK: %-20s | KIP: %-20s\n",
-               i + 1,
-               siswa[i].nama,
-               siswa[i].NISN,
-               siswa[i].jenisKelamin,
-               siswa[i].statusKIP ? "Ya" : "Tidak");
+            i + 1,
+            siswa[i].nama,
+            siswa[i].NISN,
+            siswa[i].jenisKelamin,
+            siswa[i].statusKIP ? "Ya" : "Tidak");
     }
 }
 
+// fungsi menampilkan daftar siswa yang menerima bantuan KIP.
 void daftarKIP()
 {
     printf("\n=== Daftar Penerima KIP ===\n");
@@ -131,81 +136,53 @@ void daftarKIP()
     {
         if (siswa[i].statusKIP)
             printf("%-3d. %-20s | NISN: %-20s | JK: %-20s\n",
-                   i + 1,
-                   siswa[i].nama,
-                   siswa[i].NISN,
-                   siswa[i].jenisKelamin);
+                i + 1,
+                siswa[i].nama,
+                siswa[i].NISN,
+                siswa[i].jenisKelamin);
     }
 }
 
+// fungsi menambah siswa kedalam data.
 void tambahSiswa()
 {
-    bool lanjut = true;
-
-    while (lanjut)
+    if (jumlah_siswa >= MAX_SISWA)
     {
-        struct Siswa siswaBaru;
-
-        char jenisKelaminInput;
-        int statusKipInput;
-        int opsi;
-
-        printf("Masukkan NISN: ");
-        scanf(" %[^\n]", siswaBaru.NISN);
-        if (strlen(siswaBaru.NISN) != 10)
-        {
-            printf("\nNisn Harus berisi 10 digit angka.\n");
-            continue;
-        }
-
-        printf("Masukkan nama: ");
-        scanf(" %[^\n]", siswaBaru.nama);
-        printf("Masukkan jenis kelamin (L/P): ");
-        scanf(" %c", &jenisKelaminInput);
-
-        if (jenisKelaminInput == 'L' || jenisKelaminInput == 'l')
-        {
-            strcpy(siswaBaru.jenisKelamin, "Laki-laki");
-        }
-        else if (jenisKelaminInput == 'P' || jenisKelaminInput == 'p')
-        {
-            strcpy(siswaBaru.jenisKelamin, "Perempuan");
-        }
-        else
-        {
-            printf("Masukkan input yang valid.\n");
-            continue;
-        }
-
-        printf("Status KIP (1 = Ya, 0 = Tidak): ");
-        scanf("%d", &statusKipInput);
-        siswaBaru.statusKIP = (statusKipInput == 1);
-
-        siswa[jumlah_siswa] = siswaBaru;
-        jumlah_siswa++;
-
-        printf("\nApakah anda ingin lanjut mengisi?\n");
-        printf("(1 = Ya, 0 = Tidak):");
-        scanf("%d", &opsi);
-
-        switch (opsi)
-        {
-        case 1:
-            printf("\nLanjut Mengisi\n");
-            break;
-        case 0:
-            printf("Siswa berhasil ditambahkan.\n");
-            lanjut = false;
-            break;
-        default:
-            printf("Pilihan tidak valid!\n");
-            break;
-        }
+        printf("Data siswa penuh!\n");
+        return;
     }
+
+    struct Siswa siswaBaru;
+
+    printf("Masukkan NISN: ");
+    scanf(" %[^\n]", siswaBaru.NISN);
+
+    printf("Masukkan nama: ");
+    scanf(" %[^\n]", siswaBaru.nama);
+
+    // nanti diganti dengan kondisi (malas input capital nya)
+    printf("Masukkan jenis kelamin (Laki-laki/Perempuan): ");
+    scanf(" %[^\n]", siswaBaru.jenisKelamin);
+
+    int kip;
+    printf("Status KIP (1 = Ya, 0 = Tidak): ");
+    scanf("%d", &kip);
+    siswaBaru.statusKIP = (kip == 1);
+
+    siswa[jumlah_siswa] = siswaBaru;
+    jumlah_siswa++;
+
+    printf("Siswa berhasil ditambahkan.\n");
 }
 
 void cariSiswa()
 {
+
+    for (int i = 0; i < jumlah_siswa; i++)
+    {
+    }
+
+
 }
 
 void hapusSiswa()
