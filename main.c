@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_STUDENTS 100
+#define MAX_STUDENTS 100 //belum dipelajar
 #define KIP_QUOTA 10  // Kuota maksimal penerima KIP
 
 struct Student {
@@ -129,7 +129,7 @@ void deleteStudent() {
 
 // Fungsi compare untuk sorting berdasarkan NISN
 int compareNISN(const void *a, const void *b) {
-    return strcmp(((struct Student*)a)->nisn, ((struct Student*)b)->nisn);
+    return strcmp(((struct Student*)a)->nisn, ((struct Student*)b)->nisn); //belum dipelajar
 }
 
 // Fungsi compare untuk sorting berdasarkan Nama
@@ -312,3 +312,4 @@ int main() {
     }
     return 0;
 }
+
