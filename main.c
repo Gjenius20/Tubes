@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_STUDENTS 100
-#define KIP_QUOTA 10
+#define MAX_STUDENTS 100 // belum dipelajari
+#define KIP_QUOTA 10 // belum dipelajari
 
 struct Student
 {
@@ -369,3 +369,4 @@ int main()
     }
     return 0;
 }
+
