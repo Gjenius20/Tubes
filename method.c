@@ -56,6 +56,9 @@ void menambahSiswa()
 void mengeditSiswa()
 {
 }
+void menghapusSiswa()
+{
+}
 
 // struct Siswa dataSiswa[] = {
 //     {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", true},
