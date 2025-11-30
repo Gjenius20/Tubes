@@ -35,50 +35,7 @@ int Tubes()
 
     if (found)
     {
-        bool keluar = true;
-        int opsi = 0;
-
-        do
-        {
-            menu();
-
-            printf("Masukkan pilihan: ");
-            scanf("%d", &opsi);
-
-            switch (opsi)
-            {
-            case 1:
-                printf("1. Cari siswa\n");
-                break;
-
-            case 2:
-                printf("2. Menambah siswa\n");
-                break;
-
-            case 3:
-                printf("3. Edit siswa\n");
-                break;
-
-            case 4:
-                printf("4. Daftar siswa\n");
-                daftarSiswa();
-                break;
-
-            case 5:
-                printf("5. Daftar penerima KIP\n");
-                break;
-
-            case 6:
-                printf("Keluar...\n");
-                keluar = false;
-                break;
-
-            default:
-                printf("Pilihan tidak valid!\n");
-                break;
-            }
-
-        } while (keluar);
+        menu();
     }
     else
         printf("\nLogin Gagal\n");
