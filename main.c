@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Jangan kebanyakan pakai pointer
+
 #define MAX_STUDENTS 100 // belum dipelajari
 #define KIP_QUOTA 10 // belum dipelajari
 
@@ -369,4 +371,5 @@ int main()
     }
     return 0;
 }
+
 
