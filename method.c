@@ -140,33 +140,68 @@ void daftarKIP()
 
 void tambahSiswa()
 {
-    if (jumlah_siswa >= MAX_SISWA)
+    bool lanjut = true;
+
+    while (lanjut)
     {
-        printf("Data siswa penuh!\n");
-        return;
+        struct Siswa siswaBaru;
+
+        char jenisKelaminInput;
+        int statusKipInput;
+        int opsi;
+
+        printf("Masukkan NISN: ");
+        scanf(" %[^\n]", siswaBaru.NISN);
+        if (strlen(siswaBaru.NISN) != 10)
+        {
+            printf("\nNisn Harus berisi 10 digit angka.\n");
+            continue;
+        }
+
+        printf("Masukkan nama: ");
+        scanf(" %[^\n]", siswaBaru.nama);
+        printf("Masukkan jenis kelamin (L/P): ");
+        scanf(" %c", &jenisKelaminInput);
+
+        if (jenisKelaminInput == 'L' || jenisKelaminInput == 'l')
+        {
+            strcpy(siswaBaru.jenisKelamin, "Laki-laki");
+        }
+        else if (jenisKelaminInput == 'P' || jenisKelaminInput == 'p')
+        {
+            strcpy(siswaBaru.jenisKelamin, "Perempuan");
+        }
+        else
+        {
+            printf("Masukkan input yang valid.\n");
+            continue;
+        }
+
+        printf("Status KIP (1 = Ya, 0 = Tidak): ");
+        scanf("%d", &statusKipInput);
+        siswaBaru.statusKIP = (statusKipInput == 1);
+
+        siswa[jumlah_siswa] = siswaBaru;
+        jumlah_siswa++;
+
+        printf("\nApakah anda ingin lanjut mengisi?\n");
+        printf("(1 = Ya, 0 = Tidak):");
+        scanf("%d", &opsi);
+
+        switch (opsi)
+        {
+        case 1:
+            printf("\nLanjut Mengisi\n");
+            break;
+        case 0:
+            printf("Siswa berhasil ditambahkan.\n");
+            lanjut = false;
+            break;
+        default:
+            printf("Pilihan tidak valid!\n");
+            break;
+        }
     }
-
-    struct Siswa siswaBaru;
-
-    printf("Masukkan NISN: ");
-    scanf(" %[^\n]", siswaBaru.NISN);
-
-    printf("Masukkan nama: ");
-    scanf(" %[^\n]", siswaBaru.nama);
-
-    // nanti diganti dengan kondisi (malas input capital nya)
-    printf("Masukkan jenis kelamin (Laki-laki/Perempuan): ");
-    scanf(" %[^\n]", siswaBaru.jenisKelamin);
-
-    int kip;
-    printf("Status KIP (1 = Ya, 0 = Tidak): ");
-    scanf("%d", &kip);
-    siswaBaru.statusKIP = (kip == 1);
-
-    siswa[jumlah_siswa] = siswaBaru;
-    jumlah_siswa++;
-
-    printf("Siswa berhasil ditambahkan.\n");
 }
 
 void cariSiswa()
@@ -214,8 +249,10 @@ void presentasePenerimaKIP()
             jumlahKIP++;
     }
 
-    double persentase = (double)jumlahKIP / jumlah_siswa * 100;
-    printf("Jumlah siswa: %d\n", jumlah_siswa);
+    // Perhitungan persentase dengan bilangan pecahan
+    float persentase = (jumlahKIP * 100.0) / jumlah_siswa;
+
+    printf("\nJumlah siswa: %d\n", jumlah_siswa);
     printf("Jumlah penerima KIP: %d\n", jumlahKIP);
     printf("Persentase penerima KIP: %.2f%%\n", persentase);
 }
@@ -263,6 +300,7 @@ void menu()
             break;
         case 7:
             daftarKIP();
+            presentasePenerimaKIP();
             break;
         case 8:
             lanjut = false;
