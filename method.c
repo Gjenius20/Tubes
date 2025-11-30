@@ -65,12 +65,5 @@ struct Siswa dataSiswa[7] = {
 
 
 // int main() {
-
-
-
 //     daftarKIP(dataSiswa, 7);
-
-
-
-
 // }
