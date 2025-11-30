@@ -11,16 +11,21 @@ struct Siswa
     bool statusKIP; // true/false
 };
 
-void buatTabel()
-{
-    printf("");
-}
+// void buatTabel()
+// {
+//     printf("");
+// }
+
+// mengurutkan nisn/nama
+void urutkanSiswa() {}
 
 // Daftar siswa
 void daftarSiswa(struct Siswa dataSiswa[], int banyakSiswa)
 {
     for (int i = 0; i < banyakSiswa; i++)
     {
+
+        printf("%d %s\n", i + 1, datasiswa[i].nama);
     }
 }
 
@@ -52,7 +57,7 @@ void mengeditSiswa()
 {
 }
 
-// struct Siswa dataSiswa[7] = {
+// struct Siswa dataSiswa[] = {
 //     {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", true},
 //     {"0012345679", "Abdullah Koswara", "Laki-laki", false},
 //     {"0012345680", "Budi Kapal Laut", "Laki-laki", false},

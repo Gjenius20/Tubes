@@ -61,6 +61,7 @@ int Tubes()
 
             case 4:
                 printf("4. Daftar siswa\n");
+                daftarSiswa();
                 break;
 
             case 5:
