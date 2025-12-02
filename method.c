@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-
 #define MAX_SISWA 100
 
 struct Siswa
@@ -10,8 +9,8 @@ struct Siswa
     char NISN[15];
     char nama[50];
     char jenisKelamin[15];
-    char alamat[100];  
-    char kelas[10];    
+    char alamat[100];
+    char kelas[10];
     bool statusKIP;
 };
 
@@ -64,7 +63,7 @@ void sortBerdasarkanKIP()
         for (int j = 0; j < jumlah_siswa - i - 1; j++)
         {
             // Untuk descending: true (1) duluan, false (0) belakangan
-            if (siswa[j].statusKIP < siswa[j + 1].statusKIP)  // Diubah agar true duluan
+            if (siswa[j].statusKIP < siswa[j + 1].statusKIP) // Diubah agar true duluan
                 tukarSiswa(&siswa[j], &siswa[j + 1]);
         }
     }
@@ -366,7 +365,6 @@ void presentasePenerimaKIP()
             jumlahKIP++;
     }
 
-    
     float persentase = (jumlahKIP * 100.0) / jumlah_siswa;
 
     printf("\nJumlah siswa: %d\n", jumlah_siswa);
@@ -426,10 +424,4 @@ void menu()
             printf("Pilihan tidak valid!\n");
         }
     }
-}
-
-int main()
-{
-    menu();
-    return 0;
 }
