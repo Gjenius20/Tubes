@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX_SISWA 100
 
@@ -11,19 +12,39 @@ struct Siswa
     char jenisKelamin[15];
     char alamat[100];
     char kelas[10];
+    char namaWali[50];
     bool statusKIP;
 };
 
 struct Siswa siswa[MAX_SISWA] = {
-    {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", "Jl. Sudirman No. 1", "10A", true},
-    {"0012345679", "Abdullah Koswara", "Laki-laki", "Jl. Thamrin No. 2", "10B", false},
-    {"0012345680", "Budi Kapal Laut", "Laki-laki", "Jl. Malioboro No. 3", "10A", false},
-    {"0012345681", "Dewi Angel", "Perempuan", "Jl. Malioboro No. 4", "10B", true},
-    {"0012345682", "Rama Rama", "Laki-laki", "Jl. Sudirman No. 5", "10A", false},
-    {"0012345683", "Nina Bobo", "Perempuan", "Jl. Thamrin No. 6", "10B", true},
-    {"0012345684", "Fajar Kopling", "Laki-laki", "Jl. Malioboro No. 7", "10A", false}};
+    {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", "Jl. Sudirman No. 1", "10A", "Ahmad Dhiyaul", true},
+    {"0012345679", "Abdullah Koswara", "Laki-laki", "Jl. Thamrin No. 2", "10B", "Koswara Abdullah", false},
+    {"0012345680", "Budi Kapal Laut", "Laki-laki", "Jl. Malioboro No. 3", "10A", "Kapal Budi", false},
+    {"0012345681", "Dewi Angel", "Perempuan", "Jl. Malioboro No. 4", "10B", "Angel Dewi", true},
+    {"0012345682", "Rama Rama", "Laki-laki", "Jl. Sudirman No. 5", "10A", "Rama Rama Sr.", false},
+    {"0012345683", "Nina Bobo", "Perempuan", "Jl. Thamrin No. 6", "10B", "Bobo Nina", true},
+    {"0012345684", "Fajar Kopling", "Laki-laki", "Jl. Malioboro No. 7", "10A", "Kopling Fajar", false}};
 
 int jumlah_siswa = 7; // jumlah siswa awal (contoh untuk presentasi)
+
+bool isValidNISN(const char *nisn, int excludeIndex)
+{
+    if (strlen(nisn) != 10)
+        return false;
+    // Cek tiap karakter apakah digit
+    for (int i = 0; i < 10; i++)
+    {
+        if (nisn[i] < '0' || nisn[i] > '9')
+            return false;
+    }
+
+    for (int i = 0; i < jumlah_siswa; i++)
+    {
+        if (i != excludeIndex && strcmp(siswa[i].NISN, nisn) == 0)
+            return false;
+    }
+    return true;
+}
 
 void tukarSiswa(struct Siswa *a, struct Siswa *b)
 {
@@ -32,41 +53,63 @@ void tukarSiswa(struct Siswa *a, struct Siswa *b)
     *b = temp;
 }
 
-void sortBerdasarkanNISN()
+// Bubble sort asccending/decending
+void sortNISN(bool ascending)
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
-    {
         for (int j = 0; j < jumlah_siswa - i - 1; j++)
-        {
-            if (strcmp(siswa[j].NISN, siswa[j + 1].NISN) > 0)
+            if ((ascending && strcmp(siswa[j].NISN, siswa[j + 1].NISN) > 0) ||
+                (!ascending && strcmp(siswa[j].NISN, siswa[j + 1].NISN) < 0))
                 tukarSiswa(&siswa[j], &siswa[j + 1]);
-        }
-    }
 }
 
-void sortBerdasarkanNama()
+void sortNama(bool ascending)
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
-    {
         for (int j = 0; j < jumlah_siswa - i - 1; j++)
-        {
-            if (strcmp(siswa[j].nama, siswa[j + 1].nama) > 0)
+            if ((ascending && strcmp(siswa[j].nama, siswa[j + 1].nama) > 0) ||
+                (!ascending && strcmp(siswa[j].nama, siswa[j + 1].nama) < 0))
                 tukarSiswa(&siswa[j], &siswa[j + 1]);
-        }
-    }
 }
 
-void sortBerdasarkanKIP()
+void sortKIP(bool ascending)
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
-    {
+        for (int j = 0; j < jumlah_siswa - i - 1; j++)
+            if ((ascending && siswa[j].statusKIP > siswa[j + 1].statusKIP) ||
+                (!ascending && siswa[j].statusKIP < siswa[j + 1].statusKIP))
+                tukarSiswa(&siswa[j], &siswa[j + 1]);
+}
+
+void sortKelasNama(bool ascending)
+{
+    for (int i = 0; i < jumlah_siswa - 1; i++)
         for (int j = 0; j < jumlah_siswa - i - 1; j++)
         {
-            // Untuk descending: true (1) duluan, false (0) belakangan
-            if (siswa[j].statusKIP < siswa[j + 1].statusKIP) // Diubah agar true duluan
+            int cmpKelas = strcmp(siswa[j].kelas, siswa[j + 1].kelas);
+            if ((ascending && (cmpKelas > 0 || (cmpKelas == 0 && strcmp(siswa[j].nama, siswa[j + 1].nama) > 0))) ||
+                (!ascending && (cmpKelas < 0 || (cmpKelas == 0 && strcmp(siswa[j].nama, siswa[j + 1].nama) < 0))))
                 tukarSiswa(&siswa[j], &siswa[j + 1]);
         }
-    }
+}
+
+// Sub-menu memilih urutan secara langsung
+bool pilihUrutan()
+{
+    int order;
+    printf("\nPilih urutan:\n");
+    printf("1. Ascending\n");
+    printf("2. Descending\n");
+    printf("Pilihan: ");
+    scanf(" %d", &order);
+
+    if (order == 1)
+        return true;
+    if (order == 2)
+        return false;
+
+    printf("Pilihan tidak valid! Default ascending.\n");
+    return true;
 }
 
 void urutkanSiswa()
@@ -76,55 +119,57 @@ void urutkanSiswa()
     printf("1. NISN\n");
     printf("2. Nama\n");
     printf("3. Status KIP\n");
-    printf("Pilih: ");
+    printf("4. Kelas dan Nama\n");
+    printf("Pilihan: ");
     scanf("%d", &pilihan);
-    while (getchar() != '\n')
-        ;
+
+    int opsi;
+    printf("\nPilih urutan:\n");
+    printf("1. Ascending\n");
+    printf("2. Descending\n");
+    printf("Pilihan: ");
+    scanf("%d", &opsi);
+
+    bool ascending = (opsi == 1) ? true : false;
 
     switch (pilihan)
     {
     case 1:
-        sortBerdasarkanNISN();
-        printf("Berhasil diurutkan berdasarkan NISN.\n");
+        sortNISN(ascending);
         break;
     case 2:
-        sortBerdasarkanNama();
-        printf("Berhasil diurutkan berdasarkan Nama.\n");
+        sortNama(ascending);
         break;
     case 3:
-        sortBerdasarkanKIP();
-        printf("Berhasil diurutkan berdasarkan Status KIP (descending).\n");
+        sortKIP(ascending);
+        break;
+    case 4:
+        sortKelasNama(ascending);
         break;
     default:
         printf("Pilihan tidak valid!\n");
         return;
     }
 
-    printf("\n=== Hasil Urutan Siswa ===\n");
+    printf("\n%-5s | %-20s | %-6s | %-4s\n", "No", "Nama", "Kelas", "KIP");
+    printf("---------------------------------------------\n");
     for (int i = 0; i < jumlah_siswa; i++)
-    {
-        printf("%-3d. %-20s | NISN: %-20s | JK: %-20s | Alamat: %-30s | Kelas: %-10s | KIP: %-20s\n",
+        printf("%-5d | %-20s | %-6s | %-4s\n",
                i + 1,
                siswa[i].nama,
-               siswa[i].NISN,
-               siswa[i].jenisKelamin,
-               siswa[i].alamat,
                siswa[i].kelas,
                siswa[i].statusKIP ? "Ya" : "Tidak");
-    }
 }
-
 void daftarSiswa()
 {
     printf("\n=== Daftar Siswa ===\n");
+    printf("\n%-5s | %-20s | %-6s | %-4s\n", "No", "Nama", "Kelas", "KIP");
+    printf("---------------------------------------------\n");
     for (int i = 0; i < jumlah_siswa; i++)
     {
-        printf("%-3d. %-20s | NISN: %-20s | JK: %-20s | Alamat: %-30s | Kelas: %-10s | KIP: %-20s\n",
+        printf("%-5d | %-20s | %-6s | %-4s\n",
                i + 1,
                siswa[i].nama,
-               siswa[i].NISN,
-               siswa[i].jenisKelamin,
-               siswa[i].alamat,
                siswa[i].kelas,
                siswa[i].statusKIP ? "Ya" : "Tidak");
     }
@@ -132,17 +177,20 @@ void daftarSiswa()
 
 void daftarKIP()
 {
-    printf("\n=== Daftar Penerima KIP ===\n");
+
+    printf("\n=== Daftar Siswa ===\n");
+    printf("\n%-5s | %-20s | %-6s | %-4s\n", "No", "Nama", "Kelas", "KIP");
+    printf("---------------------------------------------\n");
     for (int i = 0; i < jumlah_siswa; i++)
     {
         if (siswa[i].statusKIP)
-            printf("%-3d. %-20s | NISN: %-20s | JK: %-20s | Alamat: %-30s | Kelas: %-10s\n",
+        {
+            printf("%-5d | %-20s | %-6s | %-4s\n",
                    i + 1,
                    siswa[i].nama,
-                   siswa[i].NISN,
-                   siswa[i].jenisKelamin,
-                   siswa[i].alamat,
-                   siswa[i].kelas);
+                   siswa[i].kelas,
+                   siswa[i].statusKIP ? "Ya" : "Tidak");
+        }
     }
 }
 
@@ -160,9 +208,9 @@ void tambahSiswa()
 
         printf("Masukkan NISN: ");
         scanf(" %[^\n]", siswaBaru.NISN);
-        if (strlen(siswaBaru.NISN) != 10)
+        if (!isValidNISN(siswaBaru.NISN, -1))
         {
-            printf("\nNISN Harus berisi 10 digit angka.\n");
+            printf("\nNISN harus berisi 10 digit angka dan unik.\n");
             continue;
         }
 
@@ -189,6 +237,8 @@ void tambahSiswa()
         scanf(" %[^\n]", siswaBaru.alamat);
         printf("Masukkan kelas: ");
         scanf(" %[^\n]", siswaBaru.kelas);
+        printf("Masukkan nama wali/orang tua (kepala keluarga): ");
+        scanf(" %[^\n]", siswaBaru.namaWali);
 
         printf("Status KIP (1 = Ya, 0 = Tidak): ");
         scanf("%d", &statusKipInput);
@@ -223,6 +273,7 @@ void cariSiswa()
     printf("\nCari berdasarkan:\n");
     printf("1. NISN\n");
     printf("2. Nama\n");
+    printf("3. Kelas\n");
     printf("Pilih: ");
     scanf("%d", &pilihan);
     while (getchar() != '\n')
@@ -240,9 +291,9 @@ void cariSiswa()
         {
             if (strcmp(siswa[i].NISN, cari) == 0)
             {
-                printf("Ditemukan: %-20s | NISN: %-20s | JK: %-20s | Alamat: %-30s | Kelas: %-10s | KIP: %-20s\n",
+                printf("\nDitemukan: %-20s \n NISN: %-20s \n JK: %-20s \n Alamat: %-30s \n Kelas: %-10s \n Wali: %-20s \n KIP: %-20s\n",
                        siswa[i].nama, siswa[i].NISN, siswa[i].jenisKelamin,
-                       siswa[i].alamat, siswa[i].kelas,
+                       siswa[i].alamat, siswa[i].kelas, siswa[i].namaWali,
                        siswa[i].statusKIP ? "Ya" : "Tidak");
                 ditemukan = true;
             }
@@ -255,9 +306,24 @@ void cariSiswa()
         {
             if (strstr(siswa[i].nama, cari) != NULL)
             {
-                printf("Ditemukan: %-20s | NISN: %-20s | JK: %-20s | Alamat: %-30s | Kelas: %-10s | KIP: %-20s\n",
+                printf("\nDitemukan: %-20s \n NISN: %-20s \n JK: %-20s \n Alamat: %-30s \n Kelas: %-10s \n Wali: %-20s \n KIP: %-20s\n",
                        siswa[i].nama, siswa[i].NISN, siswa[i].jenisKelamin,
-                       siswa[i].alamat, siswa[i].kelas,
+                       siswa[i].alamat, siswa[i].kelas, siswa[i].namaWali,
+                       siswa[i].statusKIP ? "Ya" : "Tidak");
+                ditemukan = true;
+            }
+        }
+        break;
+    case 3:
+        printf("Masukkan Kelas: ");
+        scanf(" %[^\n]", cari);
+        for (int i = 0; i < jumlah_siswa; i++)
+        {
+            if (strcmp(siswa[i].kelas, cari) == 0)
+            {
+                printf("\nDitemukan: %-20s \n NISN: %-20s \n JK: %-20s \n Alamat: %-30s \n Kelas: %-10s \n Wali: %-20s \n KIP: %-20s\n",
+                       siswa[i].nama, siswa[i].NISN, siswa[i].jenisKelamin,
+                       siswa[i].alamat, siswa[i].kelas, siswa[i].namaWali,
                        siswa[i].statusKIP ? "Ya" : "Tidak");
                 ditemukan = true;
             }
@@ -309,6 +375,8 @@ void editSiswa()
             scanf(" %[^\n]", siswa[i].alamat);
             printf("Masukkan kelas baru: ");
             scanf(" %[^\n]", siswa[i].kelas);
+            printf("Masukkan nama wali/orang tua baru (kepala keluarga): ");
+            scanf(" %[^\n]", siswa[i].namaWali);
 
             int statusKipInput;
             printf("Status KIP baru (1 = Ya, 0 = Tidak): ");
