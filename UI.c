@@ -9,8 +9,9 @@ struct Login
     char userPass[10];
 };
 
+
 // Daftar User / Admin
-struct Login log[] = { {"admin", "admin123"}, {"jamal", "anakhilang"} };
+struct Login login[] = { {"admin47", "admin123"}, {"jamal", "anakhilang"} };
 
 int Tubes()
 {
@@ -26,14 +27,13 @@ int Tubes()
 
     // temp pencarian
     int found = 0;
-    for (int i = 0; i < sizeof(log) / sizeof(log[0]); i++)
+    for (int i = 0; i < sizeof(login) / sizeof(login[0]); i++)
     {
-        if ((strcmp(userInput, log[i].userName) == 0) && (strcmp(passwordInput, log[i].userPass) == 0))
+        if ((strcmp(userInput, login[i].userName) == 0) && (strcmp(passwordInput, login[i].userPass) == 0))
         {
             found = 1;
         }
     }
-
     if (found)
     {
         menu();
