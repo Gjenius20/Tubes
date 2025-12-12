@@ -1,64 +1,59 @@
-
 #include <stdio.h>
 #include <string.h>
-#include "method.c"
+#include <stdbool.h> 
+#include "method.c" 
 
-struct Login
-{
-    char userName[10];
-    char userPass[10];
+struct Login {
+    char userName[20];
+    char userPass[20];
 };
 
-// Daftar User / Admin
-struct Login login[] = {{"admin", "admin123"}, {"jamal", "anakhilang"}};
 
-int Tubes()
-{
-
-    char passwordInput[10];
-    char userInput[10];
+struct Login login[] = {
+    {"admin", "admin123"},
+    {"jamal", "anakhilang"}
+};
+int Tubes() {
+    char passwordInput[20];
+    char userInput[20];
 
     bool batas_input = true;
     int jumlah_input = 0;
 
-    while (batas_input)
-    {
-
+    while (batas_input) {
         printf("\n\n==============================================\n");
         printf("||===========  LOGIN INTERFACE  ============||\n");
         printf("==============================================\n\n");
         printf("Masukan Username: ");
-        scanf(" %s", userInput);
-        printf("Masukan Pasword: ");
-        scanf(" %s", passwordInput);
+        scanf("%19s", userInput);
+        printf("Masukan Password: ");
+        scanf("%19s", passwordInput);
 
-        // temp pencarian
+
         int found = 0;
-        for (int i = 0; i < sizeof(login) / sizeof(login[0]); i++)
-        {
-            if ((strcmp(userInput, login[i].userName) == 0) && (strcmp(passwordInput, login[i].userPass) == 0))
-            {
+        for (int i = 0; i < sizeof(login) / sizeof(login[0]); i++) {
+            if ((strcmp(userInput, login[i].userName) == 0) && (strcmp(passwordInput, login[i].userPass) == 0)) {
                 found = 1;
+                break;
             }
         }
 
-        if (found)
-        {
+        if (found) {
             menu();
         }
-        else
-        {
+        else {
             jumlah_input++;
             printf("\n########################################\n");
             printf("#              LOGIN GAGAL             #\n");
             printf("#     Username / Password salah!       #\n");
             printf("########################################\n\n");
 
-            if (jumlah_input >= 3)
-            {
-                printf("\nkesempatan habis silahkan jalankan aplikasinya kembali.\n");
+            if (jumlah_input >= 3) {
+                printf("\nKesempatan habis, silahkan jalankan aplikasi lagi.\n");
                 batas_input = false;
             }
         }
     }
-};
+
+    return 0;
+}
