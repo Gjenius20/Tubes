@@ -312,7 +312,7 @@ void cariSiswa()
     printf("4. Keluar\n");
     printf("Pilih: ");
     scanf("%d", &pilihan);
-    
+
     if (pilihan == 4)
     {
         printf("Kembali ke menu utama\n");
