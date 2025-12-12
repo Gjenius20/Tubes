@@ -528,17 +528,14 @@ void menu()
         {
         case 1:
             cariSiswa();
-            cariSiswa();
             break;
         case 2:
             tambahSiswa();
             break;
         case 3:
             editSiswa();
-            editSiswa();
             break;
         case 4:
-            hapusSiswa();
             hapusSiswa();
             break;
         case 5:
