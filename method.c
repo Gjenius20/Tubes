@@ -309,9 +309,15 @@ void cariSiswa()
     printf("1. NISN\n");
     printf("2. Nama\n");
     printf("3. Kelas\n");
+    printf("4. Keluar\n");
     printf("Pilih: ");
     scanf("%d", &pilihan);
-
+    
+    if (pilihan == 4)
+    {
+        printf("Kembali ke menu utama\n");
+        return;
+    }
     char cari[50];
     bool ditemukan = false;
 
