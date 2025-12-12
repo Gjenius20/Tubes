@@ -268,13 +268,6 @@ void tambahSiswa()
         printf("Masukkan nama wali/orang tua (kepala keluarga): ");
         scanf(" %[^\n]", siswaBaru.namaWali);
 
-        printf("Masukkan alamat: ");
-        scanf(" %[^\n]", siswaBaru.alamat);
-        printf("Masukkan kelas: ");
-        scanf(" %[^\n]", siswaBaru.kelas);
-        printf("Masukkan nama wali/orang tua (kepala keluarga): ");
-        scanf(" %[^\n]", siswaBaru.namaWali);
-
         printf("Status KIP (1 = Ya, 0 = Tidak): ");
         scanf("%d", &statusKipInput);
         siswaBaru.statusKIP = (statusKipInput == 1);
