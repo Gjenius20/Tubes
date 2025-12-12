@@ -155,20 +155,21 @@ void urutkanSiswa()
         return;
     }
 
-    printf("\n+-----+----------------------+--------+--------+\n");
-    printf("| No  | Nama                 | Kelas  | KIP    |\n");
-    printf("+-----+----------------------+--------+--------+\n");
+    printf("\n+------+------------------------+---------------+--------+-----------+\n");
+    printf("| No   | Nama                   | NISN          | Kelas  | KIP       |\n");
+    printf("+------+------------------------+---------------+--------+-----------+\n");
 
     for (int i = 0; i < jumlah_siswa; i++)
     {
-        printf("| %-4d | %-22s | %-6s | %-9s |\n",
+        printf("| %-4d | %-22s | %-13s | %-6s | %-9s |\n",
                i + 1,
                siswa[i].nama,
+               siswa[i].NISN,
                siswa[i].kelas,
                siswa[i].statusKIP ? "Ya" : "Tidak");
     }
 
-    printf("+-----+----------------------+--------+--------+\n");
+    printf("+------+------------------------+---------------+--------+-----------+\n");
 }
 
 void daftarSiswa()
@@ -236,11 +237,10 @@ void tambahSiswa()
         printf("Masukkan NISN: ");
         scanf(" %[^\n]", siswaBaru.NISN);
         if (!isValidNISN(siswaBaru.NISN, -1))
-            if (!isValidNISN(siswaBaru.NISN, -1))
-            {
-                printf("\nNISN harus berisi 10 digit angka dan unik.\n");
-                continue;
-            }
+        {
+            printf("\nNISN harus berisi 10 digit angka dan unik.\n");
+            continue;
+        }
 
         printf("Masukkan nama: ");
         scanf(" %[^\n]", siswaBaru.nama);
@@ -260,13 +260,6 @@ void tambahSiswa()
             printf("Masukkan input yang valid.\n");
             continue;
         }
-
-        printf("Masukkan alamat: ");
-        scanf(" %[^\n]", siswaBaru.alamat);
-        printf("Masukkan kelas: ");
-        scanf(" %[^\n]", siswaBaru.kelas);
-        printf("Masukkan nama wali/orang tua (kepala keluarga): ");
-        scanf(" %[^\n]", siswaBaru.namaWali);
 
         printf("Masukkan alamat: ");
         scanf(" %[^\n]", siswaBaru.alamat);
@@ -302,106 +295,99 @@ void tambahSiswa()
     }
 }
 
+void tampilkanData(int i)
+{
+    printf("\n+---------------------------------------------------------------+\n");
+    printf("|                         DATA SISWA                            |\n");
+    printf("+----------------------+----------------------------------------+\n");
+    printf("| %-20s | %-38s |\n", "Nama", siswa[i].nama);
+    printf("| %-20s | %-38s |\n", "NISN", siswa[i].NISN);
+    printf("| %-20s | %-38s |\n", "Jenis Kelamin", siswa[i].jenisKelamin);
+    printf("| %-20s | %-38s |\n", "Alamat", siswa[i].alamat);
+    printf("| %-20s | %-38s |\n", "Kelas", siswa[i].kelas);
+    printf("| %-20s | %-38s |\n", "Wali", siswa[i].namaWali);
+    printf("| %-20s | %-38s |\n", "KIP", siswa[i].statusKIP ? "Ya" : "Tidak");
+    printf("+----------------------+----------------------------------------+\n");
+}
+
 void cariSiswa()
 {
-    int pilihan;
-    printf("\nCari berdasarkan:\n");
-    printf("1. NISN\n");
-    printf("2. Nama\n");
-    printf("3. Kelas\n");
-    printf("4. Keluar\n");
-    printf("Pilih: ");
-    scanf("%d", &pilihan);
-
-    if (pilihan == 4)
+    while (1) // <- submenu loop
     {
-        printf("Kembali ke menu utama\n");
-        return;
-    }
-    char cari[50];
-    bool ditemukan = false;
+        int pilihan;
+        printf("\nCari berdasarkan:\n");
+        printf("1. NISN\n");
+        printf("2. Nama\n");
+        printf("3. Kelas\n");
+        printf("4. Keluar\n");
+        printf("Pilih: ");
 
-    switch (pilihan)
-    {
-    case 1:
-        printf("Masukkan NISN: ");
-        scanf(" %[^\n]", cari);
-        for (int i = 0; i < jumlah_siswa; i++)
+        if (scanf("%d", &pilihan) != 1)
         {
-            if (strcmp(siswa[i].NISN, cari) == 0)
-            {
-                printf("\n+---------------------------------------------------------------+\n");
-                printf("|                         DATA SISWA                            |\n");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Field", "Data");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Nama", siswa[i].nama);
-                printf("| %-20s | %-38s |\n", "NISN", siswa[i].NISN);
-                printf("| %-20s | %-38s |\n", "Jenis Kelamin", siswa[i].jenisKelamin);
-                printf("| %-20s | %-38s |\n", "Alamat", siswa[i].alamat);
-                printf("| %-20s | %-38s |\n", "Kelas", siswa[i].kelas);
-                printf("| %-20s | %-38s |\n", "Wali", siswa[i].namaWali);
-                printf("| %-20s | %-38s |\n", "KIP", siswa[i].statusKIP ? "Ya" : "Tidak");
-                printf("+----------------------+----------------------------------------+\n");
-                ditemukan = true;
-            }
+            printf("Input tidak valid! Harus angka.\n");
+            while (getchar() != '\n')
+                ;
+            continue; // kembali ulang submenu
         }
-        break;
-    case 2:
-        printf("Masukkan Nama: ");
-        scanf(" %[^\n]", cari);
-        for (int i = 0; i < jumlah_siswa; i++)
-        {
-            if (strstr(siswa[i].nama, cari) != NULL)
-            {
-                printf("\n+---------------------------------------------------------------+\n");
-                printf("|                         DATA SISWA                            |\n");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Field", "Data");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Nama", siswa[i].nama);
-                printf("| %-20s | %-38s |\n", "NISN", siswa[i].NISN);
-                printf("| %-20s | %-38s |\n", "Jenis Kelamin", siswa[i].jenisKelamin);
-                printf("| %-20s | %-38s |\n", "Alamat", siswa[i].alamat);
-                printf("| %-20s | %-38s |\n", "Kelas", siswa[i].kelas);
-                printf("| %-20s | %-38s |\n", "Wali", siswa[i].namaWali);
-                printf("| %-20s | %-38s |\n", "KIP", siswa[i].statusKIP ? "Ya" : "Tidak");
-                printf("+----------------------+----------------------------------------+\n");
-                ditemukan = true;
-            }
-        }
-        break;
-    case 3:
-        printf("Masukkan Kelas: ");
-        scanf(" %[^\n]", cari);
-        for (int i = 0; i < jumlah_siswa; i++)
-        {
-            if (strcmp(siswa[i].kelas, cari) == 0)
-            {
-                printf("\n+---------------------------------------------------------------+\n");
-                printf("|                         DATA SISWA                            |\n");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Field", "Data");
-                printf("+----------------------+----------------------------------------+\n");
-                printf("| %-20s | %-38s |\n", "Nama", siswa[i].nama);
-                printf("| %-20s | %-38s |\n", "NISN", siswa[i].NISN);
-                printf("| %-20s | %-38s |\n", "Jenis Kelamin", siswa[i].jenisKelamin);
-                printf("| %-20s | %-38s |\n", "Alamat", siswa[i].alamat);
-                printf("| %-20s | %-38s |\n", "Kelas", siswa[i].kelas);
-                printf("| %-20s | %-38s |\n", "Wali", siswa[i].namaWali);
-                printf("| %-20s | %-38s |\n", "KIP", siswa[i].statusKIP ? "Ya" : "Tidak");
-                printf("+----------------------+----------------------------------------+\n");
-                ditemukan = true;
-            }
-        }
-        break;
-    default:
-        printf("Pilihan tidak valid!\n");
-        return;
-    }
 
-    if (!ditemukan)
-        printf("Siswa tidak ditemukan.\n");
+        if (pilihan == 4)
+        {
+            printf("Kembali ke menu utama\n");
+            break; // keluar dari submenu
+        }
+
+        char cari[50];
+        bool ditemukan = false;
+
+        switch (pilihan)
+        {
+        case 1:
+            printf("Masukkan NISN: ");
+            scanf(" %[^\n]", cari);
+            for (int i = 0; i < jumlah_siswa; i++)
+            {
+                if (strcmp(siswa[i].NISN, cari) == 0)
+                {
+                    tampilkanData(i);
+                    ditemukan = true;
+                }
+            }
+            break;
+
+        case 2:
+            printf("Masukkan Nama: ");
+            scanf(" %[^\n]", cari);
+            for (int i = 0; i < jumlah_siswa; i++)
+            {
+                if (strstr(siswa[i].nama, cari) != NULL)
+                {
+                    tampilkanData(i);
+                    ditemukan = true;
+                }
+            }
+            break;
+
+        case 3:
+            printf("Masukkan Kelas: ");
+            scanf(" %[^\n]", cari);
+            for (int i = 0; i < jumlah_siswa; i++)
+            {
+                if (strcmp(siswa[i].kelas, cari) == 0)
+                {
+                    tampilkanData(i);
+                    ditemukan = true;
+                }
+            }
+            break;
+
+        default:
+            printf("Pilihan tidak valid!\n");
+            continue;
+        }
+
+        if (!ditemukan)
+            printf("Siswa tidak ditemukan.\n");
+    }
 }
 
 void editSiswa()
