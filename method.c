@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 
+// Inisiasi banyak siswa yang bisa di simpan.
 #define MAX_SISWA 100
 
 struct Siswa
@@ -16,36 +17,43 @@ struct Siswa
     bool statusKIP;
 };
 
+// Data Siswa.
 struct Siswa siswa[MAX_SISWA] = {
     {"0012345678", "Dafa Dhiyaul Haq", "Laki-laki", "Jl. Sudirman No. 1", "10A", "Ahmad", true},
     {"0012345679", "Abdullah Koswara", "Laki-laki", "Jl. Thamrin No. 2", "10B", "Koswara", false},
     {"0012345680", "Budi Kapal Laut", "Laki-laki", "Jl. Malioboro No. 3", "10A", "Kapal Laud", false},
     {"0012345681", "Dewi Angel", "Perempuan", "Jl. Malioboro No. 4", "10B", "Angela", true},
-    {"0012345682", "Rama Rama", "Laki-laki", "Jl. Sudirman No. 5", "10A", "Rama Rama", false},
-    {"0012345683", "Nina Bobo", "Perempuan", "Jl. Thamrin No. 6", "10B", "Bobo", true},
+    {"0012345682", "Rama Rama", "Laki-laki", "Jl. Sudirman No. 5", "10A", "Kupukupu", false},
+    {"0012345683", "Nina Bobo", "Perempuan", "Jl. Thamrin No. 6", "10B", "Turu", true},
     {"0012345684", "Fajar Kopling", "Laki-laki", "Jl. Malioboro No. 7", "10A", "Asep Knalpot", false}};
 
-int jumlah_siswa = 7; // jumlah siswa awal (contoh untuk presentasi)
+int jumlah_siswa = 7; // jumlah siswa awal.
 
-bool isValidNISN(const char *nisn, int excludeIndex)
+// Untuk Mengecek Nisn Valid Atau Tidak.
+bool isValidNISN(const char *nisn, int siswaTerdaftar)
 {
+    // Cek nisn > 10 atau < 10.
     if (strlen(nisn) != 10)
         return false;
-    // Cek tiap karakter apakah digit
+
+    // Cek tiap karakter apakah digit.
     for (int i = 0; i < 10; i++)
     {
         if (nisn[i] < '0' || nisn[i] > '9')
             return false;
     }
 
+    // Cek apakah nisn sudah terdaftar.
     for (int i = 0; i < jumlah_siswa; i++)
     {
-        if (i != excludeIndex && strcmp(siswa[i].NISN, nisn) == 0)
+        if (i != siswaTerdaftar && strcmp(siswa[i].NISN, nisn) == 0)
             return false;
     }
     return true;
 }
 
+// Bubble sort asccending/decending
+// Swap
 void tukarSiswa(struct Siswa *a, struct Siswa *b)
 {
     struct Siswa temp = *a;
@@ -53,7 +61,6 @@ void tukarSiswa(struct Siswa *a, struct Siswa *b)
     *b = temp;
 }
 
-// Bubble sort asccending/decending
 void sortNISN(bool ascending)
 {
     for (int i = 0; i < jumlah_siswa - 1; i++)
@@ -112,7 +119,7 @@ bool pilihUrutan()
     return true;
 }
 
-// sub menu untuk urutan siswa
+// sub menu untuk mengurutkan siswa.
 void urutkanSiswa()
 {
     int pilihan;
@@ -172,6 +179,7 @@ void urutkanSiswa()
     printf("+------+------------------------+---------------+--------+-----------+\n");
 }
 
+// Menampilkan data seluruh siswa.
 void daftarSiswa()
 {
     printf("\n+----------------------------------------------------+\n");
@@ -191,6 +199,7 @@ void daftarSiswa()
 
     printf("+------+------------------------+--------+-----------+\n");
 }
+
 // menampilkan seluruh siswa yang berstatus KIP
 void daftarKIP()
 {
@@ -219,23 +228,23 @@ void daftarKIP()
 // fungsi menambah siswa pada array of record/struct
 void tambahSiswa()
 {
-    // inisisasi kondisi loop.
+
     bool lanjut = true;
 
-    // Loop
     while (lanjut)
     {
-        // inisiasi struct siswa baru
+
         struct Siswa siswaBaru;
 
         char jenisKelaminInput;
         int statusKipInput;
 
-        // membuat variable opsi untuk, memastikan user ingin menambahkan lagi siswa.
         int opsi;
 
         printf("Masukkan NISN: ");
         scanf(" %[^\n]", siswaBaru.NISN);
+
+        // mengecek apakah nisn valid atau sudah digunakan.
         if (!isValidNISN(siswaBaru.NISN, -1))
         {
             printf("\nNISN harus berisi 10 digit angka dan unik.\n");
@@ -310,9 +319,10 @@ void tampilkanData(int i)
     printf("+----------------------+----------------------------------------+\n");
 }
 
+// mencari siswa berdasarkan NISN, Nama, dan Kelas.
 void cariSiswa()
 {
-    while (1) // <- submenu loop
+    while (1) // submenu loop
     {
         int pilihan;
         printf("\nCari berdasarkan:\n");
@@ -326,14 +336,14 @@ void cariSiswa()
         {
             printf("Input tidak valid! Harus angka.\n");
             while (getchar() != '\n')
-                ;
-            continue; // kembali ulang submenu
+                ; // menghapus data cache.
+            continue;
         }
 
         if (pilihan == 4)
         {
             printf("Kembali ke menu utama\n");
-            break; // keluar dari submenu
+            break;
         }
 
         char cari[50];
@@ -390,6 +400,7 @@ void cariSiswa()
     }
 }
 
+// Fungsi mengedit siswa.
 void editSiswa()
 {
     char nisn[15];
@@ -444,6 +455,7 @@ void editSiswa()
         printf("Siswa dengan NISN %s tidak ditemukan.\n", nisn);
 }
 
+// Fungsi menghapus siswa.
 void hapusSiswa()
 {
     char nisn[15];
@@ -470,6 +482,7 @@ void hapusSiswa()
         printf("Siswa dengan NISN %s tidak ditemukan.\n", nisn);
 }
 
+// Menghitung presentase siswa.
 void presentasePenerimaKIP()
 {
     if (jumlah_siswa == 0)
@@ -492,6 +505,7 @@ void presentasePenerimaKIP()
     printf("Persentase penerima KIP: %.2f%%\n", persentase);
 }
 
+// Menu Utama.
 void menu()
 {
     bool lanjut = true;
@@ -542,7 +556,7 @@ void menu()
             break;
         case 8:
             lanjut = false;
-            break;
+            exit(true);
         default:
             printf("Pilihan tidak valid!\n");
         }

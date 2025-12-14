@@ -1,59 +1,67 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h> 
-#include "method.c" 
+#include <stdbool.h>
+#include "method.c"
 
-struct Login {
+struct Login
+{
     char userName[20];
     char userPass[20];
 };
 
-
+// username dan password yang tersimpan.
 struct Login login[] = {
     {"admin", "admin123"},
-    {"jamal", "anakhilang"}
-};
-int Tubes() {
+    {"jamal", "anakhilang"}};
+
+// Login Page atau user login.
+int Tubes()
+{
     char passwordInput[20];
     char userInput[20];
 
+    // Batas maksimal percobaan login, sebanyak 3 percobaan.
     bool batas_input = true;
     int jumlah_input = 0;
 
-    while (batas_input) {
+    while (batas_input)
+    {
         printf("\n\n==============================================\n");
         printf("||===========  LOGIN INTERFACE  ============||\n");
         printf("==============================================\n\n");
         printf("Masukan Username: ");
-        scanf("%19s", userInput);
+        scanf(" %s", userInput);
         printf("Masukan Password: ");
-        scanf("%19s", passwordInput);
-
+        scanf(" %s", passwordInput);
 
         int found = 0;
-        for (int i = 0; i < sizeof(login) / sizeof(login[0]); i++) {
-            if ((strcmp(userInput, login[i].userName) == 0) && (strcmp(passwordInput, login[i].userPass) == 0)) {
+        for (int i = 0; i < sizeof(login) / sizeof(login[0]); i++)
+        {
+            if ((strcmp(userInput, login[i].userName) == 0) && (strcmp(passwordInput, login[i].userPass) == 0))
+            {
                 found = 1;
                 break;
             }
         }
 
-        if (found) {
+        if (found)
+        {
             menu();
         }
-        else {
+        else
+        {
             jumlah_input++;
             printf("\n########################################\n");
             printf("#              LOGIN GAGAL             #\n");
             printf("#     Username / Password salah!       #\n");
             printf("########################################\n\n");
 
-            if (jumlah_input >= 3) {
+            // Batas percobaan login.
+            if (jumlah_input >= 3)
+            {
                 printf("\nKesempatan habis, silahkan jalankan aplikasi lagi.\n");
                 batas_input = false;
             }
         }
     }
-
-    return 0;
 }
